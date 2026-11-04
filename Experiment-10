@@ -1,0 +1,119 @@
+# Experiment: To Print the Address of a Variable and Observe Memory Addresses in Multiple Processes
+
+## Aim
+To write a C program that prints the address of a variable and enters an infinite loop. Run three to four instances of the same program and compare the printed memory addresses.
+
+## Objectives
+- To understand how memory addresses are assigned to variables.
+- To create multiple processes of the same program.
+- To observe the difference between virtual memory addresses of different processes.
+
+## Program
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+
+int main()
+{
+    int a = 10;
+
+    printf("Process ID: %d\n", getpid());
+    printf("Address of variable a: %p\n", (void *)&a);
+
+    while(1)
+    {
+        // Infinite loop
+    }
+
+    return 0;
+}
+```
+
+## Explanation
+1. `#include <stdio.h>` is used for input and output operations.
+2. `#include <unistd.h>` provides the `getpid()` function.
+3. An integer variable `a` is declared and initialized with the value 10.
+4. `getpid()` displays the process ID of the running program.
+5. `&a` gives the memory address of variable `a`.
+6. `%p` is used to print the memory address.
+7. `while(1)` creates an infinite loop, keeping the process running until it is manually terminated.
+
+## Execution Steps
+
+**Step 1: Create a C file**
+
+```bash
+nano address.c
+```
+
+Write the program and save it.
+
+**Step 2: Compile the program**
+
+```bash
+gcc address.c -o address
+```
+
+**Step 3: Run the first process**
+
+```bash
+./address
+```
+
+**Step 4: Open three more terminals**
+
+In each terminal, execute:
+
+```bash
+./address
+```
+
+Alternatively, run multiple instances in the background from one terminal:
+
+```bash
+./address &
+./address &
+./address &
+./address &
+```
+
+**Step 5: Observe the output**
+
+Each process displays its own Process ID and the address of variable `a`.
+
+**Step 6: Terminate the processes**
+
+Press `Ctrl + C` in each terminal where the program is running. For background processes, use:
+
+```bash
+pkill address
+```
+
+## Sample Output
+
+```text
+Process ID: 2145
+Address of variable a: 0x7ffd82a1b45c
+
+Process ID: 2146
+Address of variable a: 0x7ffc91b2c32c
+
+Process ID: 2147
+Address of variable a: 0x7ffde3a4d21c
+
+Process ID: 2148
+Address of variable a: 0x7ffd72c5e12c
+```
+
+*Note: The addresses shown above are examples. Actual addresses may differ each time the program runs.*
+
+## Observation
+- Each execution creates a separate process with a unique Process ID.
+- The address of variable `a` may be different in different processes.
+- Each process has its own virtual address space.
+- The operating system manages memory separately for each process.
+- Address values may also change between executions due to Address Space Layout Randomization (ASLR).
+
+## Result
+The C program was successfully executed in multiple processes. The memory addresses of the variable were observed and compared. This demonstrates that different processes have separate virtual address spaces.
